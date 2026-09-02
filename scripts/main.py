@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+from http.client import HTTPException
 import ipaddress
 import re
 import sys
@@ -63,7 +64,11 @@ def is_live(proxy: str, test_url: str, timeout: int) -> bool:
         request = Request(test_url, headers={"User-Agent": "NDT-Proxy-Scraper/1.0"})
         with opener.open(request, timeout=timeout) as response:
             return 200 <= response.status < 400
-    except (HTTPError, URLError, TimeoutError, OSError):
+    except (HTTPError, URLError, TimeoutError, OSError, HTTPException):
+        return False
+    except Exception:
+        # A public proxy can return malformed protocol data or close the
+        # connection in unexpected ways. One bad proxy must not abort a run.
         return False
 
 
