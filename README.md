@@ -38,4 +38,3 @@ Sources are public and proxy availability is not guaranteed. Public proxies may 
 ## License
 
 The project code is released under the [MIT License](LICENSE). Individual proxy sources may have their own terms.
-
