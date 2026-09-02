@@ -37,7 +37,9 @@ def read_sources() -> list[str]:
 def valid_proxy(value: str) -> bool:
     try:
         host, port = value.rsplit(":", 1)
-        ipaddress.ip_address(host)
+        address = ipaddress.ip_address(host)
+        if not address.is_global:
+            return False
         return 1 <= int(port) <= 65535
     except (ValueError, ipaddress.AddressValueError):
         return False
