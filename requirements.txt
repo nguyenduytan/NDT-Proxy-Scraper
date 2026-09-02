@@ -1,2 +1,1 @@
-requests>=2.31,<3
-
+# No third-party dependencies; the scraper uses Python's standard library.

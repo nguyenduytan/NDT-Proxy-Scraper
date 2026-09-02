@@ -8,9 +8,8 @@ import ipaddress
 import re
 import sys
 from pathlib import Path
-from urllib.parse import urlparse
-
-import requests
+from urllib.error import HTTPError, URLError
+from urllib.request import ProxyHandler, Request, build_opener, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "sources" / "sources.txt"
@@ -45,25 +44,24 @@ def valid_proxy(value: str) -> bool:
 
 
 def fetch_proxies(url: str, timeout: int) -> set[str]:
-    response = requests.get(
+    request = Request(
         url,
-        timeout=timeout,
         headers={"User-Agent": "NDT-Proxy-Scraper/1.0 (+https://github.com/nguyenduytan/NDT-Proxy-Scraper)"},
     )
-    response.raise_for_status()
-    return {match for match in PROXY_RE.findall(response.text) if valid_proxy(match)}
+    with urlopen(request, timeout=timeout) as response:
+        text = response.read().decode("utf-8", errors="replace")
+    return {match for match in PROXY_RE.findall(text) if valid_proxy(match)}
 
 
 def is_live(proxy: str, test_url: str, timeout: int) -> bool:
     try:
-        response = requests.get(
-            test_url,
-            proxies={"http": f"http://{proxy}", "https": f"http://{proxy}"},
-            timeout=timeout,
-            headers={"User-Agent": "NDT-Proxy-Scraper/1.0"},
+        opener = build_opener(
+            ProxyHandler({"http": f"http://{proxy}", "https": f"http://{proxy}"})
         )
-        return response.ok
-    except requests.RequestException:
+        request = Request(test_url, headers={"User-Agent": "NDT-Proxy-Scraper/1.0"})
+        with opener.open(request, timeout=timeout) as response:
+            return 200 <= response.status < 400
+    except (HTTPError, URLError, TimeoutError, OSError):
         return False
 
 
