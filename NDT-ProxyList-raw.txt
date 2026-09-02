@@ -1,0 +1,8 @@
+# ==================================================
+# NDT Proxy List
+# Maintained by Tony Nguyen
+# Repository: https://github.com/nguyenduytan/NDT-Proxy-Scraper
+# Format: ip:port
+# Updated automatically by GitHub Actions
+# ==================================================
+
