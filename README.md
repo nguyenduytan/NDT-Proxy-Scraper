@@ -4,37 +4,62 @@
 [![License](https://img.shields.io/github/license/nguyenduytan/NDT-Proxy-Scraper)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/nguyenduytan/NDT-Proxy-Scraper)](https://github.com/nguyenduytan/NDT-Proxy-Scraper/commits/main)
 
-Automatically collects public HTTP/HTTPS proxies, removes duplicates, optionally checks availability, and publishes a plain-text list maintained by **Tony Nguyen**.
+Automatically collects public HTTP, SOCKS4 and SOCKS5 proxy endpoints, removes duplicates, filters invalid addresses, and publishes plain-text lists maintained by **Tony Nguyen**.
 
-## Download
+## Download lists
 
-- [Live proxy list](NDT-ProxyList.txt)
-- [Raw scraped list](NDT-ProxyList-raw.txt)
+Each file contains one `ip:port` entry per line after the header:
 
-Direct raw URL:
+- [HTTP proxies](http.txt)
+- [SOCKS4 proxies](socks4.txt)
+- [SOCKS5 proxies](socks5.txt)
 
-`https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/NDT-ProxyList.txt`
+Raw URLs:
+
+```text
+https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/http.txt
+https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/socks4.txt
+https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/socks5.txt
+```
 
 ## Automation
 
-GitHub Actions updates the files every 6 hours at 00:00, 06:00, 12:00 and 18:00 UTC. You can also run it manually from the **Actions** tab.
+GitHub Actions scrapes the configured sources every 6 hours at 00:00, 06:00, 12:00 and 18:00 UTC. It can also be started manually from the **Actions** tab.
 
-The live list uses a short timeout. If no proxy passes the check, the raw list is published as a fallback so a temporary test-service outage does not erase the list.
+This repository is intentionally **scrape-only**: live proxy checking is disabled. Availability, protocol support and safety are not guaranteed.
+
+## Sources
+
+Sources are listed in [proxy_sources.txt](proxy_sources.txt), grouped by protocol. The project includes ProxyScrape, TheSpeedX, Proxifly, TuanMinPay, Monosans, gproxynet and HProxy public endpoints. Source projects may change their URLs or terms at any time.
 
 ## Run locally
 
 ```bash
-python -m venv .venv
-python -m pip install -r requirements.txt
-python scripts/main.py --check-live
+python scripts/main.py --timeout 15
 ```
 
-Use `python scripts/main.py` to scrape without live checking. Add or remove public source URLs in `sources/sources.txt`.
+Add a source using this format:
+
+```text
+http|https://example.com/http.txt
+socks4|https://example.com/socks4.txt
+socks5|https://example.com/socks5.txt
+```
 
 ## Responsible use
 
-Sources are public and proxy availability is not guaranteed. Public proxies may log, modify, or inspect traffic. Do not use them for credentials, sensitive data, abuse, evasion, or activity that violates applicable laws or a service's terms. Use this project only for lawful testing, research, and automation where you have permission.
+Public proxies may log, modify or inspect traffic and may be unstable or malicious. Never use them for credentials, sensitive data, abuse, evasion, or activity that violates applicable laws or service terms. Use this project only for lawful testing, research and automation where you have permission.
+
+## Credits
+
+- [TuanMinPay/live-proxy](https://github.com/TuanMinPay/live-proxy)
+- [TheSpeedX/PROXY-List](https://github.com/TheSpeedX/PROXY-List)
+- [Proxifly/free-proxy-list](https://github.com/proxifly/free-proxy-list)
+- [Monosans/proxy-list](https://github.com/monosans/proxy-list)
+- [gproxynet/free-proxy-list](https://github.com/gproxynet/free-proxy-list)
+- [HProxy free-proxy-list](https://github.com/hproxy-com/free-proxy-list)
 
 ## License
 
-The project code is released under the [MIT License](LICENSE). Individual proxy sources may have their own terms.
+Project code is released under the [MIT License](LICENSE). Individual source projects may have their own licenses and terms.
+
