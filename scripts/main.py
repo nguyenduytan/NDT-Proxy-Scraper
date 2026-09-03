@@ -11,7 +11,6 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_FILE = ROOT / "proxy_sources.txt"
 OUTPUTS = {"http": ROOT / "http.txt", "socks4": ROOT / "socks4.txt", "socks5": ROOT / "socks5.txt"}
 PROXY_RE = re.compile(r"(?<![\w.])((?:\d{1,3}\.){3}\d{1,3}:\d{1,5})(?!\w)")
 
@@ -28,16 +27,13 @@ def header(protocol: str) -> str:
 """
 
 
-def read_sources() -> list[tuple[str, str]]:
+def parse_sources(values: list[str]) -> list[tuple[str, str]]:
     sources: list[tuple[str, str]] = []
-    for line in SOURCE_FILE.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
+    for value in values:
         try:
-            protocol, url = line.split("|", 1)
+            protocol, url = value.split("|", 1)
         except ValueError:
-            print(f"WARN invalid source line: {line}", file=sys.stderr)
+            print(f"WARN invalid source argument: {value}", file=sys.stderr)
             continue
         protocol = protocol.strip().lower()
         if protocol in OUTPUTS and url.strip():
@@ -70,8 +66,12 @@ def write_list(protocol: str, proxies: set[str]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Scrape public proxies without live checking.")
     parser.add_argument("--timeout", type=int, default=15, help="Source download timeout in seconds")
+    parser.add_argument("--source", action="append", default=[], metavar="PROTOCOL|URL")
     args = parser.parse_args()
-    sources = read_sources()
+    sources = parse_sources(args.source)
+    if not sources:
+        parser.error("at least one --source PROTOCOL|URL is required")
+
     grouped = {protocol: set() for protocol in OUTPUTS}
     failed = 0
     for protocol, source in sources:
@@ -85,6 +85,7 @@ def main() -> int:
         except Exception as exc:
             failed += 1
             print(f"WARN unexpected source error: {source} ({exc})", file=sys.stderr)
+
     for protocol, proxies in grouped.items():
         write_list(protocol, proxies)
         print(f"Published {len(proxies)} {protocol} proxies to {OUTPUTS[protocol].name}")

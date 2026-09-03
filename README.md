@@ -28,17 +28,18 @@ GitHub Actions scrapes the configured sources every 6 hours at 00:00, 06:00, 12:
 
 This repository is intentionally **scrape-only**: live proxy checking is disabled. Availability, protocol support and safety are not guaranteed.
 
-## Sources
-
-Sources are listed in [proxy_sources.txt](proxy_sources.txt), grouped by protocol. The project includes ProxyScrape, TheSpeedX, Proxifly, TuanMinPay, Monosans, gproxynet and HProxy public endpoints. Source projects may change their URLs or terms at any time.
-
 ## Run locally
 
 ```bash
-python scripts/main.py --timeout 15
+python scripts/main.py --timeout 15 \
+  --source "http|https://example.com/http.txt" \
+  --source "socks4|https://example.com/socks4.txt" \
+  --source "socks5|https://example.com/socks5.txt"
 ```
 
-Add a source using this format:
+The complete source configuration is kept inside the GitHub Actions workflow and is not published as a separate source file.
+
+Source argument format:
 
 ```text
 http|https://example.com/http.txt
@@ -50,16 +51,6 @@ socks5|https://example.com/socks5.txt
 
 Public proxies may log, modify or inspect traffic and may be unstable or malicious. Never use them for credentials, sensitive data, abuse, evasion, or activity that violates applicable laws or service terms. Use this project only for lawful testing, research and automation where you have permission.
 
-## Credits
-
-- [TuanMinPay/live-proxy](https://github.com/TuanMinPay/live-proxy)
-- [TheSpeedX/PROXY-List](https://github.com/TheSpeedX/PROXY-List)
-- [Proxifly/free-proxy-list](https://github.com/proxifly/free-proxy-list)
-- [Monosans/proxy-list](https://github.com/monosans/proxy-list)
-- [gproxynet/free-proxy-list](https://github.com/gproxynet/free-proxy-list)
-- [HProxy free-proxy-list](https://github.com/hproxy-com/free-proxy-list)
-
 ## License
 
 Project code is released under the [MIT License](LICENSE). Individual source projects may have their own licenses and terms.
-
