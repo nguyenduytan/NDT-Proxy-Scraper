@@ -49,7 +49,7 @@ python scripts/main.py --timeout 15 \
   --source "socks5|https://example.com/socks5.txt"
 ```
 
-The complete source configuration is kept inside the GitHub Actions workflow and is not published as a separate source file.
+The source configuration is kept inside the GitHub Actions workflow and is not published as a separate source file. Sources are fetched directly; no proxy list is mirrored from another aggregator repository.
 
 Source argument format:
 
