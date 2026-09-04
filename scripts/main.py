@@ -17,13 +17,14 @@ OUTPUTS = {"http": ROOT / "http.txt", "socks4": ROOT / "socks4.txt", "socks5": R
 PROXY_RE = re.compile(r"(?<![\w.])((?:\d{1,3}\.){3}\d{1,3}:\d{1,5})(?!\w)")
 
 
-def header(protocol: str) -> str:
+def header(protocol: str, updated: str) -> str:
     return f"""# ==================================================
 # NDT {protocol.upper()} Proxy List
 # Maintained by Tony Nguyen
 # Repository: https://github.com/nguyenduytan/NDT-Proxy-Scraper
 # Format: ip:port
 # Mode: scrape-only (live checking disabled)
+# Updated: {updated}
 # Updated automatically by GitHub Actions
 # ==================================================
 """
@@ -62,7 +63,8 @@ def fetch_proxies(url: str, timeout: int) -> set[str]:
 def write_list(protocol: str, proxies: set[str]) -> None:
     ordered = sorted(proxies, key=lambda item: tuple(map(int, item.replace(":", ".").split("."))))
     body = "\n".join(ordered)
-    OUTPUTS[protocol].write_text(header(protocol) + ("\n" if body else "") + body + "\n", encoding="utf-8")
+    updated = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh")).strftime("%a, %d %b %Y %H:%M:%S ICT")
+    OUTPUTS[protocol].write_text(header(protocol, updated) + ("\n" if body else "") + body + "\n", encoding="utf-8")
 
 
 def update_readme(grouped: dict[str, set[str]]) -> None:
