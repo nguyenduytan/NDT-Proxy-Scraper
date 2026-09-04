@@ -2,7 +2,7 @@ name: Update proxy lists
 
 on:
   schedule:
-    - cron: "0 0,6,12,18 * * *"
+    - cron: "0 */1 * * *"
   workflow_dispatch:
 
 permissions:
@@ -44,7 +44,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add http.txt socks4.txt socks5.txt
+          git add http.txt socks4.txt socks5.txt README.md
           git diff --cached --quiet || git commit -m "chore: update proxy lists"
           git push
-

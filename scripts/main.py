@@ -6,7 +6,9 @@ import argparse
 import ipaddress
 import re
 import sys
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -63,6 +65,28 @@ def write_list(protocol: str, proxies: set[str]) -> None:
     OUTPUTS[protocol].write_text(header(protocol) + ("\n" if body else "") + body + "\n", encoding="utf-8")
 
 
+def update_readme(grouped: dict[str, set[str]]) -> None:
+    readme = ROOT / "README.md"
+    text = readme.read_text(encoding="utf-8")
+    total = len(set().union(*grouped.values()))
+    updated = datetime.now(ZoneInfo("Asia/Ho_Chi_Minh")).strftime("%a, %d %b %Y %H:%M:%S ICT")
+    rows = [
+        "<!-- AUTO-STATS:START -->",
+        f"- **Total proxy:** {total:,}",
+        f"- **HTTP:** {len(grouped['http']):,}",
+        f"- **SOCKS4:** {len(grouped['socks4']):,}",
+        f"- **SOCKS5:** {len(grouped['socks5']):,}",
+        f"- **Last update:** {updated}",
+        "<!-- AUTO-STATS:END -->",
+    ]
+    block = "\n".join(rows)
+    pattern = re.compile(r"<!-- AUTO-STATS:START -->.*?<!-- AUTO-STATS:END -->", re.DOTALL)
+    text, replacements = pattern.subn(block, text, count=1)
+    if replacements != 1:
+        raise RuntimeError("README auto-stat markers are missing")
+    readme.write_text(text, encoding="utf-8")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Scrape public proxies without live checking.")
     parser.add_argument("--timeout", type=int, default=15, help="Source download timeout in seconds")
@@ -89,9 +113,10 @@ def main() -> int:
     for protocol, proxies in grouped.items():
         write_list(protocol, proxies)
         print(f"Published {len(proxies)} {protocol} proxies to {OUTPUTS[protocol].name}")
+    update_readme(grouped)
+    print("Updated README statistics")
     return 0 if failed < len(sources) else 1
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

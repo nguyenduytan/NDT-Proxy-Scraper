@@ -1,10 +1,22 @@
 # NDT Proxy Scraper
 
-[![Update proxy lists](https://github.com/nguyenduytan/NDT-Proxy-Scraper/actions/workflows/update-proxies.yml/badge.svg)](https://github.com/nguyenduytan/NDT-Proxy-Scraper/actions/workflows/update-proxies.yml)
+[![NDT Proxy Updater](https://github.com/nguyenduytan/NDT-Proxy-Scraper/actions/workflows/update-proxies.yml/badge.svg)](https://github.com/nguyenduytan/NDT-Proxy-Scraper/actions/workflows/update-proxies.yml)
+[![GitHub stars](https://img.shields.io/github/stars/nguyenduytan/NDT-Proxy-Scraper?style=social)](https://github.com/nguyenduytan/NDT-Proxy-Scraper)
+[![GitHub forks](https://img.shields.io/github/forks/nguyenduytan/NDT-Proxy-Scraper?style=social)](https://github.com/nguyenduytan/NDT-Proxy-Scraper)
+[![GitHub repo size](https://img.shields.io/github/repo-size/nguyenduytan/NDT-Proxy-Scraper)](https://github.com/nguyenduytan/NDT-Proxy-Scraper)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/nguyenduytan/NDT-Proxy-Scraper?logo=git)](https://github.com/nguyenduytan/NDT-Proxy-Scraper/commits/main)
 [![License](https://img.shields.io/github/license/nguyenduytan/NDT-Proxy-Scraper)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/nguyenduytan/NDT-Proxy-Scraper)](https://github.com/nguyenduytan/NDT-Proxy-Scraper/commits/main)
 
 Automatically collects public HTTP, SOCKS4 and SOCKS5 proxy endpoints, removes duplicates, filters invalid addresses, and publishes plain-text lists maintained by **Tony Nguyen**.
+
+<!-- AUTO-STATS:START -->
+- **Total proxy:** 31,231
+- **HTTP:** 15,837
+- **SOCKS4:** 6,484
+- **SOCKS5:** 8,910
+- **Last update:** 04 Sep 2026 (local sample; workflow refreshes hourly)
+<!-- AUTO-STATS:END -->
 
 ## Download lists
 
@@ -16,15 +28,15 @@ Each file contains one `ip:port` entry per line after the header:
 
 Raw URLs:
 
-```text
-https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/http.txt
-https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/socks4.txt
-https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/socks5.txt
+```bash
+curl -fsSL https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/http.txt -o http.txt
+curl -fsSL https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/socks4.txt -o socks4.txt
+curl -fsSL https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/socks5.txt -o socks5.txt
 ```
 
 ## Automation
 
-GitHub Actions scrapes the configured sources every 6 hours at 00:00, 06:00, 12:00 and 18:00 UTC. It can also be started manually from the **Actions** tab.
+GitHub Actions scrapes the configured sources every hour at minute 00 (`0 */1 * * *`, UTC). It can also be started manually from the **Actions** tab.
 
 This repository is intentionally **scrape-only**: live proxy checking is disabled. Availability, protocol support and safety are not guaranteed.
 
