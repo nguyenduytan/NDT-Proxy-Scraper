@@ -2,8 +2,12 @@ name: Update proxy lists
 
 on:
   schedule:
-    - cron: "0 */1 * * *"
+    - cron: "17 */1 * * *"
   workflow_dispatch:
+
+concurrency:
+  group: ndt-proxy-list-update
+  cancel-in-progress: false
 
 permissions:
   contents: write

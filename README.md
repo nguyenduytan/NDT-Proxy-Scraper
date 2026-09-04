@@ -36,7 +36,7 @@ curl -fsSL https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main
 
 ## Automation
 
-GitHub Actions scrapes the configured sources every hour at minute 00 (`0 */1 * * *`, UTC). It can also be started manually from the **Actions** tab.
+GitHub Actions scrapes the configured sources every hour at minute 17 (`17 */1 * * *`, UTC). It can also be started manually from the **Actions** tab.
 
 This repository is intentionally **scrape-only**: live proxy checking is disabled. Availability, protocol support and safety are not guaranteed.
 
