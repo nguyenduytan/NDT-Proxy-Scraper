@@ -26,6 +26,8 @@ Each file contains one `ip:port` entry per line after the header:
 - [SOCKS4 proxies](socks4.txt)
 - [SOCKS5 proxies](socks5.txt)
 
+<!-- AUTO-DOWNLOADS:START -->
+
 ### HTTP (15,837 proxies)
 
 ```bash
@@ -43,6 +45,7 @@ curl -fsSL https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/socks5.txt -o socks5.txt
 ```
+<!-- AUTO-DOWNLOADS:END -->
 
 ## Automation
 

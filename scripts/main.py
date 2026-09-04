@@ -84,6 +84,23 @@ def update_readme(grouped: dict[str, set[str]]) -> None:
     text, replacements = pattern.subn(block, text, count=1)
     if replacements != 1:
         raise RuntimeError("README auto-stat markers are missing")
+    downloads = ["<!-- AUTO-DOWNLOADS:START -->"]
+    for protocol in OUTPUTS:
+        filename = OUTPUTS[protocol].name
+        downloads.extend([
+            f"### {protocol.upper()} ({len(grouped[protocol]):,} proxies)",
+            "",
+            "```bash",
+            f"curl -fsSL https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/{filename} -o {filename}",
+            "```",
+            "",
+        ])
+    downloads.append("<!-- AUTO-DOWNLOADS:END -->")
+    download_block = "\n".join(downloads)
+    download_pattern = re.compile(r"<!-- AUTO-DOWNLOADS:START -->.*?<!-- AUTO-DOWNLOADS:END -->", re.DOTALL)
+    text, download_replacements = download_pattern.subn(download_block, text, count=1)
+    if download_replacements != 1:
+        raise RuntimeError("README auto-download markers are missing")
     readme.write_text(text, encoding="utf-8")
 
 
