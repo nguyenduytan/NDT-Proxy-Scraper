@@ -11,11 +11,11 @@
 Automatically collects public HTTP, SOCKS4 and SOCKS5 proxy endpoints, removes duplicates, filters invalid addresses, and publishes plain-text lists maintained by **Tony Nguyen**.
 
 <!-- AUTO-STATS:START -->
-- **Total proxy:** 18,933
-- **HTTP:** 9,444
-- **SOCKS4:** 4,841
-- **SOCKS5:** 9,277
-- **Last update:** Wed, 16 Sep 2026 05:13:50 ICT
+- **Total proxy:** 20,297
+- **HTTP:** 10,639
+- **SOCKS4:** 4,861
+- **SOCKS5:** 9,470
+- **Last update:** Wed, 16 Sep 2026 07:23:01 ICT
 <!-- AUTO-STATS:END -->
 
 ## Download lists
@@ -27,19 +27,19 @@ Each file contains one `ip:port` entry per line after the header:
 - [SOCKS5 proxies](socks5.txt)
 
 <!-- AUTO-DOWNLOADS:START -->
-### HTTP (9,444 proxies)
+### HTTP (10,639 proxies)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/http.txt -o http.txt
 ```
 
-### SOCKS4 (4,841 proxies)
+### SOCKS4 (4,861 proxies)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/socks4.txt -o socks4.txt
 ```
 
-### SOCKS5 (9,277 proxies)
+### SOCKS5 (9,470 proxies)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nguyenduytan/NDT-Proxy-Scraper/main/socks5.txt -o socks5.txt
